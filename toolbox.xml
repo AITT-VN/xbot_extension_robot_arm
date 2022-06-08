@@ -1,20 +1,40 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-  <category name="SOUND" colour="#00A06B" icon="music">
-    <block type="xbot_sound_start"/>
-    <block type="xbot_sound_action"/>
-    <block type="xbot_sound_playtrack">
-      <value name="track">
+  <category name="ROBOT ARM" colour="#154c79" icon="cogs">
+    <block type="arm_init"/>
+    <block type="arm_setup"/>
+    <block type="arm_moveBase">
+      <value name="angle">
         <shadow type="math_number">
-          <field name="NUM">1</field>
+          <field name="NUM">90</field>
         </shadow>
       </value>
     </block>
-    <block type="xbot_sound_vol">
-      <value name="vol">
+    <block type="arm_moveRight">
+      <value name="angle">
         <shadow type="math_number">
-          <field name="NUM">20</field>
+          <field name="NUM">90</field>
         </shadow>
       </value>
     </block>
+    <block type="arm_moveLeft">
+      <value name="angle">
+        <shadow type="math_number">
+          <field name="NUM">90</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="arm_moveRZ">
+      <value name="radius">
+        <shadow type="math_number">
+          <field name="NUM">80</field>
+        </shadow>
+      </value>
+      <value name="height">
+        <shadow type="math_number">
+          <field name="NUM">80</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="arm_moveGrip"/>
   </category>
 </xml>

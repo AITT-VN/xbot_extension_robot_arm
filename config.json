@@ -1,5 +1,5 @@
 {
-    "name": "Sound Player",
+    "name": "Robot Arm",
     "description": "Mục mở rộng điều khiển cánh tay robot cho robot xBot",
     "libs": [
         "arm.py"
