@@ -75,11 +75,11 @@ Blockly.Blocks['arm_init'] = {
   }
 };
 
-Blockly.Blocks['arm_setup'] = {
+Blockly.Blocks['arm_origin'] = {
   init: function() {
     this.jsonInit(
       {
-        type: "arm_setup",
+        type: "arm_origin",
         message0: "về tọa độ gốc",
         previousStatement: null,
         nextStatement: null,
@@ -101,7 +101,7 @@ Blockly.Blocks['arm_moveGrip'] = {
     this.jsonInit(
       {
         type: "arm_moveGrip",
-        message0: "%1 đầu gắp",
+        message0: "%1 đầu gắp với tốc độ %2",
         previousStatement: null,
         nextStatement: null,
         args0: [
@@ -112,6 +112,11 @@ Blockly.Blocks['arm_moveGrip'] = {
               ["Đóng", "90"],
               ["Mở", "0"]
             ],
+          },
+          {
+            "type": "input_value",
+            "name": "speed",
+            "check": "Number"
           }
         ],
         colour: "#154c79",
@@ -130,11 +135,16 @@ Blockly.Blocks['arm_moveBase'] = {
     this.jsonInit(
       {
         "type": "arm_moveBase",
-        "message0": "xoay servo chính giữa góc %1 (0-180)",
+        "message0": "xoay khớp giữa góc %1 (0-180) với tốc độ %2 (0-100)",
         "args0": [
           {
             "type": "input_value",
             "name": "angle",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "speed",
             "check": "Number"
           }
         ],
@@ -157,11 +167,16 @@ Blockly.Blocks['arm_moveRight'] = {
     this.jsonInit(
       {
         "type": "arm_moveRight",
-        "message0": "xoay servo bên phải góc %1 (0-180)",
+        "message0": "xoay khớp bên phải góc %1 (50-180) với tốc độ %2 (0-100)",
         "args0": [
           {
             "type": "input_value",
             "name": "angle",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "speed",
             "check": "Number"
           }
         ],
@@ -184,11 +199,16 @@ Blockly.Blocks['arm_moveLeft'] = {
     this.jsonInit(
       {
         "type": "arm_moveLeft",
-        "message0": "xoay servo bên trái góc %1 (0-180)",
+        "message0": "xoay khớp bên trái góc %1 (0-140) với tốc độ %2 (0-100)",
         "args0": [
           {
             "type": "input_value",
             "name": "angle",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "speed",
             "check": "Number"
           }
         ],
@@ -206,13 +226,18 @@ Blockly.Blocks['arm_moveLeft'] = {
   }
 };
 
-Blockly.Blocks['arm_moveRZ'] = {
+Blockly.Blocks['arm_moveKinematic'] = {
   init: function() {
     this.jsonInit(
       {
-        "type": "arm_moveLeft",
-        "message0": "di chuyển đầu gắp tới vị trí R %1 Z %2",
+        "type": "arm_moveKinematic",
+        "message0": "di chuyển đầu gắp tới vị trí O %1 R %2 Z %3 với tốc độ %4 (0-100)",
         "args0": [
+          {
+            "type": "input_value",
+            "name": "theta",
+            "check": "Number"
+          },
           {
             "type": "input_value",
             "name": "radius",
@@ -221,6 +246,11 @@ Blockly.Blocks['arm_moveRZ'] = {
           {
             "type": "input_value",
             "name": "height",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "speed",
             "check": "Number"
           }
         ],
@@ -252,44 +282,50 @@ Blockly.Python['arm_init'] = function(block) {
   return code;
 };
 
-Blockly.Python['arm_setup'] = function(block) {
+Blockly.Python['arm_origin'] = function(block) {
   // TODO: Assemble Python into code variable.
-  var code = "arm.setup()\n";
+  var code = "arm.origin()\n";
   return code;
 };
 
 Blockly.Python['arm_moveGrip'] = function(block) {
   // TODO: Assemble Python into code variable.
   var action = block.getFieldValue('action');
-  var code = "arm.moveGripper(" + action + ")\n";
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
+  var code = "arm.moveGripper(" + action + ", " + speed + ")\n";
   return code;
 };
 
 Blockly.Python["arm_moveBase"] = function (block) {
   var angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = "arm.moveBase(" + angle + ")\n";
+  var code = "arm.moveBase(" + angle + ", " + speed + ")\n";
   return code;
 };
 
 Blockly.Python["arm_moveRight"] = function (block) {
   var angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = "arm.moveRight(" + angle + ")\n";
+  var code = "arm.moveRight(" + angle + ", " + speed + ")\n";
   return code;
 };
 
 Blockly.Python["arm_moveLeft"] = function (block) {
   var angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = "arm.moveLeft(" + angle + ")\n";
+  var code = "arm.moveLeft(" + angle + ", " + speed + ")\n";
   return code;
 };
 
-Blockly.Python["arm_moveRZ"] = function (block) {
+Blockly.Python["arm_moveKinematic"] = function (block) {
+  var theta = Blockly.Python.valueToCode(block, 'theta', Blockly.Python.ORDER_ATOMIC);
   var radius = Blockly.Python.valueToCode(block, 'radius', Blockly.Python.ORDER_ATOMIC);
   var height = Blockly.Python.valueToCode(block, 'height', Blockly.Python.ORDER_ATOMIC);
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = "arm.moveRZ(" + radius + ', ' + height + ")\n";
+  var code = "arm.moveKinematic(" + theta + ", " + radius + ", " + height + ", " + speed + ")\n";
   return code;
 };
